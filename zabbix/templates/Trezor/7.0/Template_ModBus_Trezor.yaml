@@ -1,0 +1,164 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 9568b5b21c31459c9d4881bf60060fc7
+      name: Templates/CyLab
+  templates:
+    - uuid: c3fa66bb152f4e8ea936a53c84dd7bb0
+      template: 'Template ModBus Trezor'
+      name: 'Template ModBus Trezor'
+      description: 'Template for Trezor - CyLab'
+      vendor:
+        name: Open-Tech
+        version: 7.0-0
+      groups:
+        - name: Templates/CyLab
+      items:
+        - uuid: 2d2db51ef1bc4c4d987cc00527dead92
+          name: 'Trezor readings'
+          key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          delay: 5s
+          history: 7d
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: target
+              value: modbus
+          triggers:
+            - uuid: c18bdd6f0d0849f9a7eabb722d8dfc8d
+              expression: 'nodata(/Template ModBus Trezor/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0'
+              name: 'PLC does not send data'
+              priority: HIGH
+              description: 'PLC device not provide data'
+              manual_close: 'YES'
+              tags:
+                - tag: target
+                  value: plc
+        - uuid: 4aafc965181446069809302c103ec4d0
+          name: Lock
+          type: DEPENDENT
+          key: zbx.value0
+          delay: '0'
+          valuemap:
+            name: StatusTrezorLock
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[0]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: trezor
+        - uuid: 290a488b8b984b0c86d4e52597e6f838
+          name: Droos
+          type: DEPENDENT
+          key: zbx.value1
+          delay: '0'
+          valuemap:
+            name: StatusTrezorDoors
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[1]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: trezor
+      tags:
+        - tag: target
+          value: cylab
+      macros:
+        - macro: '{$MODBUS_ADDRESS}'
+          value: '0'
+        - macro: '{$MODBUS_COUNT}'
+          value: '8'
+        - macro: '{$MODBUS_ENDPOINT}'
+          value: '10.15.1.215:502'
+        - macro: '{$MODBUS_FUNCTION}'
+          value: '2'
+        - macro: '{$MODBUS_SLAVEID}'
+          value: '1'
+        - macro: '{$MODBUS_TYPE}'
+          value: bit
+      dashboards:
+        - uuid: 7a82358a3bb34a68a24a26d34d122ca7
+          name: Trezor
+          pages:
+            - name: Graph
+              widgets:
+                - type: graph
+                  width: '72'
+                  height: '6'
+                  fields:
+                    - type: GRAPH
+                      name: graphid.0
+                      value:
+                        host: 'Template ModBus Trezor'
+                        name: 'Trezor graph'
+                    - type: STRING
+                      name: reference
+                      value: SDMYP
+            - name: Test
+              widgets:
+                - type: honeycomb
+                  width: '72'
+                  height: '6'
+                  fields:
+                    - type: STRING
+                      name: items.0
+                      value: Droos
+                    - type: STRING
+                      name: items.1
+                      value: Lock
+                    - type: STRING
+                      name: primary_label
+                      value: '{ITEM.NAME}'
+                    - type: STRING
+                      name: reference
+                      value: EZKJW
+                    - type: STRING
+                      name: thresholds.0.color
+                      value: '891515'
+                    - type: STRING
+                      name: thresholds.0.threshold
+                      value: '0'
+                    - type: STRING
+                      name: thresholds.1.color
+                      value: 1B5E20
+                    - type: STRING
+                      name: thresholds.1.threshold
+                      value: '1'
+      valuemaps:
+        - uuid: 376208f734094b2b8615a4f45522c356
+          name: StatusTrezorDoors
+          mappings:
+            - value: '0'
+              newvalue: Open
+            - value: '1'
+              newvalue: Close
+        - uuid: 7617a0f8e6944e6bb9a257d777f0f200
+          name: StatusTrezorLock
+          mappings:
+            - value: '0'
+              newvalue: Unlocked
+            - value: '1'
+              newvalue: Locked
+  graphs:
+    - uuid: d286cae48bb544b6bc5d152342c66f91
+      name: 'Trezor graph'
+      graph_items:
+        - drawtype: BOLD_LINE
+          color: 199C0D
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Trezor'
+            key: zbx.value1
+        - sortorder: '1'
+          drawtype: BOLD_LINE
+          color: F63100
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Trezor'
+            key: zbx.value0

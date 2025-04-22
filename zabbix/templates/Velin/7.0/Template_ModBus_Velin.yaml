@@ -1,0 +1,452 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 9568b5b21c31459c9d4881bf60060fc7
+      name: Templates/CyLab
+  templates:
+    - uuid: 6ef2429694d241829d96b21d9061aeb5
+      template: 'Template ModBus Velin'
+      name: 'Template ModBus Velin'
+      description: 'Template for Trezor - CyLab'
+      vendor:
+        name: Open-Tech
+        version: 7.0-0
+      groups:
+        - name: Templates/CyLab
+      items:
+        - uuid: 3e0e5483417f48bcbf28035d3a76bd13
+          name: 'Velin readings'
+          key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          delay: 5s
+          history: 7d
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: target
+              value: modbus
+          triggers:
+            - uuid: 7f02ebb1ef6c48849e25fbfac1082ffe
+              expression: 'nodata(/Template ModBus Velin/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0'
+              name: 'PLC does not send data'
+              priority: HIGH
+              description: 'PLC device not provide data'
+              manual_close: 'YES'
+              tags:
+                - tag: target
+                  value: plc
+        - uuid: 959263e8428340c5b50a5d690c230cd8
+          name: 'Value 0'
+          type: DEPENDENT
+          key: zbx.value0
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[0]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: c24f62b90dc04b428b15c787a41df6e3
+          name: 'Value 1'
+          type: DEPENDENT
+          key: zbx.value1
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[1]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 88e24d0528da44b99ed373e9eca95227
+          name: 'Value 2'
+          type: DEPENDENT
+          key: zbx.value2
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[2]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 0e7fde900ae84fc4be538f09b45a19cc
+          name: Light
+          type: DEPENDENT
+          key: zbx.value3
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[3]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 562828bf1e1c420bbb48ecab77c496ad
+          name: 'Gen 1'
+          type: DEPENDENT
+          key: zbx.value4
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[4]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 4b5ecc2cff90414e9a3d4f18261a4c56
+          name: 'Gen 2'
+          type: DEPENDENT
+          key: zbx.value5
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[5]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: a44b2d0094114430b5d3c49b48607434
+          name: 'Filling pump up'
+          type: DEPENDENT
+          key: zbx.value6
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[6]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: c966801d3bd4483ea20af0461ce71751
+          name: 'Filing pump down'
+          type: DEPENDENT
+          key: zbx.value7
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[7]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 277d352b8587450ab34cad938c407066
+          name: 'Main valve'
+          type: DEPENDENT
+          key: zbx.value8
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[8]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 6f3e2a086f884d66acfbabacf65ae2c7
+          name: 'Auxiliary pump up'
+          type: DEPENDENT
+          key: zbx.value9
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[9]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 0d9aa0d7de6d49838abcb9ad0ad6bf12
+          name: 'Auxiliary pump down'
+          type: DEPENDENT
+          key: zbx.value10
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[10]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 7833aec62c9c43b28f437b4943f3f631
+          name: Safety
+          type: DEPENDENT
+          key: zbx.value11
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[11]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 4bcc8064d6594bae814fdefd81e67500
+          name: 'WL Error'
+          type: DEPENDENT
+          key: zbx.value12
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[12]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 17d40696e50545738750f11d6ca33f37
+          name: 'WL Bypass'
+          type: DEPENDENT
+          key: zbx.value13
+          delay: '0'
+          valuemap:
+            name: StatusOO
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[13]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: c3df5461346e4cf2a01d30008320c0f0
+          name: 'Value 14'
+          type: DEPENDENT
+          key: zbx.value14
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[14]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 19fa43bf1fd24cd48a6fb91ea844a8bf
+          name: 'Value 15'
+          type: DEPENDENT
+          key: zbx.value15
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[15]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: b6061b29695a4c2dabc779fea7b5c849
+          name: 'Value 16'
+          type: DEPENDENT
+          key: zbx.value16
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[16]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: c24e6c07d869499fb03f2912f58597e3
+          name: 'Value 17'
+          type: DEPENDENT
+          key: zbx.value17
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[17]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 3915f1ec82fe45c0a0a72bed91d154c1
+          name: 'Value 18'
+          type: DEPENDENT
+          key: zbx.value18
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[18]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+        - uuid: 4e52d546c2094024823f0548787861e4
+          name: 'Value 19'
+          type: DEPENDENT
+          key: zbx.value19
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$[19]'
+          master_item:
+            key: 'modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}]'
+          tags:
+            - tag: target
+              value: velin
+      tags:
+        - tag: target
+          value: cylab
+      macros:
+        - macro: '{$MODBUS_ADDRESS}'
+          value: '8191'
+        - macro: '{$MODBUS_COUNT}'
+          value: '20'
+        - macro: '{$MODBUS_ENDPOINT}'
+          value: '10.15.1.210:502'
+        - macro: '{$MODBUS_FUNCTION}'
+          value: '2'
+        - macro: '{$MODBUS_SLAVEID}'
+          value: '1'
+        - macro: '{$MODBUS_TYPE}'
+          value: bit
+      dashboards:
+        - uuid: 22dff097d1d54c869f9e6cfa1e8cf486
+          name: 'Velin status'
+          pages:
+            - widgets:
+                - type: graph
+                  width: '71'
+                  height: '11'
+                  fields:
+                    - type: GRAPH
+                      name: graphid.0
+                      value:
+                        host: 'Template ModBus Velin'
+                        name: 'Velin status Graph'
+                    - type: STRING
+                      name: reference
+                      value: RBUVB
+      valuemaps:
+        - uuid: f218447a5dcc40a29ec51569c19ec96b
+          name: StatusOO
+          mappings:
+            - value: '0'
+              newvalue: 'Off'
+            - value: '1'
+              newvalue: 'On'
+        - uuid: a7fc220c6a6644fa992d104dfea6d8f7
+          name: StatusUD
+          mappings:
+            - value: '0'
+              newvalue: Down
+            - value: '1'
+              newvalue: Up
+  graphs:
+    - uuid: a7abc8ecaf5646eab0cc95d7cbb2b26b
+      name: 'Velin status Graph'
+      graph_items:
+        - drawtype: BOLD_LINE
+          color: FFFF00
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value3
+        - sortorder: '1'
+          drawtype: BOLD_LINE
+          color: FF8000
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value4
+        - sortorder: '2'
+          drawtype: BOLD_LINE
+          color: FFBF00
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value5
+        - sortorder: '3'
+          drawtype: BOLD_LINE
+          color: 4000FF
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value6
+        - sortorder: '4'
+          drawtype: BOLD_LINE
+          color: 673AB7
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value8
+        - sortorder: '5'
+          drawtype: BOLD_LINE
+          color: 00BFFF
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value9
+        - sortorder: '6'
+          drawtype: BOLD_LINE
+          color: FF0000
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value11
+        - sortorder: '7'
+          drawtype: BOLD_LINE
+          color: '891515'
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value12
+        - sortorder: '8'
+          drawtype: BOLD_LINE
+          color: 199C0D
+          calc_fnc: ALL
+          item:
+            host: 'Template ModBus Velin'
+            key: zbx.value13
