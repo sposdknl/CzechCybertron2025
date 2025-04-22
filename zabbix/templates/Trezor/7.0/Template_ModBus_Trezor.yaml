@@ -26,7 +26,7 @@ zabbix_export:
               value: modbus
           triggers:
             - uuid: c18bdd6f0d0849f9a7eabb722d8dfc8d
-              expression: 'nodata(/Template ModBus Trezor/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0'
+              expression: 'nodata(/Template ModBus Trezor/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=1'
               name: 'PLC does not send data'
               priority: HIGH
               description: 'PLC device not provide data'
@@ -50,8 +50,17 @@ zabbix_export:
           tags:
             - tag: target
               value: trezor
+          triggers:
+            - uuid: 6498fa783502458aad905ee1eb598189
+              expression: 'min(/Template ModBus Trezor/zbx.value0,1m)=0'
+              name: 'Trezor Door Open !!!'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                - tag: target
+                  value: plc
         - uuid: 290a488b8b984b0c86d4e52597e6f838
-          name: Droos
+          name: Doors
           type: DEPENDENT
           key: zbx.value1
           delay: '0'
@@ -66,6 +75,15 @@ zabbix_export:
           tags:
             - tag: target
               value: trezor
+          triggers:
+            - uuid: 186b4dd84fbf467fb8aad53cd5932850
+              expression: 'min(/Template ModBus Trezor/zbx.value1,1m)=0'
+              name: 'Trezor Lock Open !!!'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                - tag: target
+                  value: plc
       tags:
         - tag: target
           value: cylab
@@ -100,7 +118,7 @@ zabbix_export:
                     - type: STRING
                       name: reference
                       value: SDMYP
-            - name: Test
+            - name: Honeycomb
               widgets:
                 - type: honeycomb
                   width: '72'
@@ -108,10 +126,10 @@ zabbix_export:
                   fields:
                     - type: STRING
                       name: items.0
-                      value: Droos
+                      value: Lock
                     - type: STRING
                       name: items.1
-                      value: Lock
+                      value: Doors
                     - type: STRING
                       name: primary_label
                       value: '{ITEM.NAME}'

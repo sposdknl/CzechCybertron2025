@@ -40,7 +40,7 @@
                     <triggers>
                         <trigger>
                             <uuid>c18bdd6f0d0849f9a7eabb722d8dfc8d</uuid>
-                            <expression>nodata(/Template ModBus Trezor/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0</expression>
+                            <expression>nodata(/Template ModBus Trezor/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=1</expression>
                             <name>PLC does not send data</name>
                             <priority>HIGH</priority>
                             <description>PLC device not provide data</description>
@@ -80,10 +80,25 @@
                             <value>trezor</value>
                         </tag>
                     </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>6498fa783502458aad905ee1eb598189</uuid>
+                            <expression>min(/Template ModBus Trezor/zbx.value0,1m)=0</expression>
+                            <name>Trezor Door Open !!!</name>
+                            <priority>DISASTER</priority>
+                            <manual_close>YES</manual_close>
+                            <tags>
+                                <tag>
+                                    <tag>target</tag>
+                                    <value>plc</value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </triggers>
                 </item>
                 <item>
                     <uuid>290a488b8b984b0c86d4e52597e6f838</uuid>
-                    <name>Droos</name>
+                    <name>Doors</name>
                     <type>DEPENDENT</type>
                     <key>zbx.value1</key>
                     <delay>0</delay>
@@ -107,6 +122,21 @@
                             <value>trezor</value>
                         </tag>
                     </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>186b4dd84fbf467fb8aad53cd5932850</uuid>
+                            <expression>min(/Template ModBus Trezor/zbx.value1,1m)=0</expression>
+                            <name>Trezor Lock Open !!!</name>
+                            <priority>DISASTER</priority>
+                            <manual_close>YES</manual_close>
+                            <tags>
+                                <tag>
+                                    <tag>target</tag>
+                                    <value>plc</value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </triggers>
                 </item>
             </items>
             <tags>
@@ -172,7 +202,7 @@
                             </widgets>
                         </page>
                         <page>
-                            <name>Test</name>
+                            <name>Honeycomb</name>
                             <widgets>
                                 <widget>
                                     <type>honeycomb</type>
@@ -182,12 +212,12 @@
                                         <field>
                                             <type>STRING</type>
                                             <name>items.0</name>
-                                            <value>Droos</value>
+                                            <value>Lock</value>
                                         </field>
                                         <field>
                                             <type>STRING</type>
                                             <name>items.1</name>
-                                            <value>Lock</value>
+                                            <value>Doors</value>
                                         </field>
                                         <field>
                                             <type>STRING</type>

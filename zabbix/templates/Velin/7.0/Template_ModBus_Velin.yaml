@@ -26,7 +26,7 @@ zabbix_export:
               value: modbus
           triggers:
             - uuid: 7f02ebb1ef6c48849e25fbfac1082ffe
-              expression: 'nodata(/Template ModBus Velin/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0'
+              expression: 'nodata(/Template ModBus Velin/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=1'
               name: 'PLC does not send data'
               priority: HIGH
               description: 'PLC device not provide data'
@@ -236,6 +236,15 @@ zabbix_export:
           tags:
             - tag: target
               value: velin
+          triggers:
+            - uuid: 8769b80205db433995d88764a82279d3
+              expression: 'min(/Template ModBus Velin/zbx.value12,1m)=1'
+              name: 'WL Error'
+              priority: DISASTER
+              manual_close: 'YES'
+              tags:
+                - tag: target
+                  value: plc
         - uuid: 17d40696e50545738750f11d6ca33f37
           name: 'WL Bypass'
           type: DEPENDENT
@@ -356,7 +365,8 @@ zabbix_export:
         - uuid: 22dff097d1d54c869f9e6cfa1e8cf486
           name: 'Velin status'
           pages:
-            - widgets:
+            - name: Status
+              widgets:
                 - type: graph
                   width: '71'
                   height: '11'
@@ -369,6 +379,63 @@ zabbix_export:
                     - type: STRING
                       name: reference
                       value: RBUVB
+            - name: Honeycomb
+              widgets:
+                - type: honeycomb
+                  width: '72'
+                  height: '9'
+                  fields:
+                    - type: STRING
+                      name: items.0
+                      value: 'Auxiliary pump down'
+                    - type: STRING
+                      name: items.1
+                      value: 'Auxiliary pump up'
+                    - type: STRING
+                      name: items.2
+                      value: 'Filing pump down'
+                    - type: STRING
+                      name: items.3
+                      value: 'Filling pump up'
+                    - type: STRING
+                      name: items.4
+                      value: 'Gen 1'
+                    - type: STRING
+                      name: items.5
+                      value: 'Gen 2'
+                    - type: STRING
+                      name: items.6
+                      value: Light
+                    - type: STRING
+                      name: items.7
+                      value: 'Main valve'
+                    - type: STRING
+                      name: items.8
+                      value: Safety
+                    - type: STRING
+                      name: items.9
+                      value: 'WL Bypass'
+                    - type: STRING
+                      name: items.10
+                      value: 'WL Error'
+                    - type: STRING
+                      name: primary_label
+                      value: '{ITEM.NAME}'
+                    - type: STRING
+                      name: reference
+                      value: JMAIE
+                    - type: STRING
+                      name: thresholds.0.color
+                      value: '891515'
+                    - type: STRING
+                      name: thresholds.0.threshold
+                      value: '0'
+                    - type: STRING
+                      name: thresholds.1.color
+                      value: 1B5E20
+                    - type: STRING
+                      name: thresholds.1.threshold
+                      value: '1'
       valuemaps:
         - uuid: f218447a5dcc40a29ec51569c19ec96b
           name: StatusOO

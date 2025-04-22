@@ -40,7 +40,7 @@
                     <triggers>
                         <trigger>
                             <uuid>7f02ebb1ef6c48849e25fbfac1082ffe</uuid>
-                            <expression>nodata(/Template ModBus Velin/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=0</expression>
+                            <expression>nodata(/Template ModBus Velin/modbus.get[tcp://{$MODBUS_ENDPOINT},{$MODBUS_SLAVEID},{$MODBUS_FUNCTION},{$MODBUS_ADDRESS},{$MODBUS_COUNT},{$MODBUS_TYPE}],5m)=1</expression>
                             <name>PLC does not send data</name>
                             <priority>HIGH</priority>
                             <description>PLC device not provide data</description>
@@ -395,6 +395,21 @@
                             <value>velin</value>
                         </tag>
                     </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>8769b80205db433995d88764a82279d3</uuid>
+                            <expression>min(/Template ModBus Velin/zbx.value12,1m)=1</expression>
+                            <name>WL Error</name>
+                            <priority>DISASTER</priority>
+                            <manual_close>YES</manual_close>
+                            <tags>
+                                <tag>
+                                    <tag>target</tag>
+                                    <value>plc</value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </triggers>
                 </item>
                 <item>
                     <uuid>17d40696e50545738750f11d6ca33f37</uuid>
@@ -606,6 +621,7 @@
                     <name>Velin status</name>
                     <pages>
                         <page>
+                            <name>Status</name>
                             <widgets>
                                 <widget>
                                     <type>graph</type>
@@ -624,6 +640,103 @@
                                             <type>STRING</type>
                                             <name>reference</name>
                                             <value>RBUVB</value>
+                                        </field>
+                                    </fields>
+                                </widget>
+                            </widgets>
+                        </page>
+                        <page>
+                            <name>Honeycomb</name>
+                            <widgets>
+                                <widget>
+                                    <type>honeycomb</type>
+                                    <width>72</width>
+                                    <height>9</height>
+                                    <fields>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.0</name>
+                                            <value>Auxiliary pump down</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.1</name>
+                                            <value>Auxiliary pump up</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.2</name>
+                                            <value>Filing pump down</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.3</name>
+                                            <value>Filling pump up</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.4</name>
+                                            <value>Gen 1</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.5</name>
+                                            <value>Gen 2</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.6</name>
+                                            <value>Light</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.7</name>
+                                            <value>Main valve</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.8</name>
+                                            <value>Safety</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.9</name>
+                                            <value>WL Bypass</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>items.10</name>
+                                            <value>WL Error</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>primary_label</name>
+                                            <value>{ITEM.NAME}</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>reference</name>
+                                            <value>JMAIE</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>thresholds.0.color</name>
+                                            <value>891515</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>thresholds.0.threshold</name>
+                                            <value>0</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>thresholds.1.color</name>
+                                            <value>1B5E20</value>
+                                        </field>
+                                        <field>
+                                            <type>STRING</type>
+                                            <name>thresholds.1.threshold</name>
+                                            <value>1</value>
                                         </field>
                                     </fields>
                                 </widget>
