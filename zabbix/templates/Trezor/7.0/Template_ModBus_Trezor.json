@@ -230,6 +230,11 @@
                                                 "value": "EZKJW"
                                             },
                                             {
+                                                "type": "INTEGER",
+                                                "name": "secondary_label_decimal_places",
+                                                "value": "0"
+                                            },
+                                            {
                                                 "type": "STRING",
                                                 "name": "thresholds.0.color",
                                                 "value": "891515"
@@ -289,6 +294,36 @@
             }
         ],
         "graphs": [
+            {
+                "uuid": "e40258f88d1b41deab6dd23dc9e2bf81",
+                "name": "Graph doors",
+                "graph_items": [
+                    {
+                        "drawtype": "BOLD_LINE",
+                        "color": "199C0D",
+                        "calc_fnc": "ALL",
+                        "item": {
+                            "host": "Template ModBus Trezor",
+                            "key": "zbx.value1"
+                        }
+                    }
+                ]
+            },
+            {
+                "uuid": "c14f4ac603424db5977c4edbed67c003",
+                "name": "Graph lock",
+                "graph_items": [
+                    {
+                        "drawtype": "BOLD_LINE",
+                        "color": "F63100",
+                        "calc_fnc": "ALL",
+                        "item": {
+                            "host": "Template ModBus Trezor",
+                            "key": "zbx.value0"
+                        }
+                    }
+                ]
+            },
             {
                 "uuid": "d286cae48bb544b6bc5d152342c66f91",
                 "name": "Trezor graph",

@@ -719,6 +719,11 @@
                                             <value>JMAIE</value>
                                         </field>
                                         <field>
+                                            <type>INTEGER</type>
+                                            <name>secondary_label_decimal_places</name>
+                                            <value>0</value>
+                                        </field>
+                                        <field>
                                             <type>STRING</type>
                                             <name>thresholds.0.color</name>
                                             <value>891515</value>

@@ -719,6 +719,11 @@
                                                 "value": "JMAIE"
                                             },
                                             {
+                                                "type": "INTEGER",
+                                                "name": "secondary_label_decimal_places",
+                                                "value": "0"
+                                            },
+                                            {
                                                 "type": "STRING",
                                                 "name": "thresholds.0.color",
                                                 "value": "891515"

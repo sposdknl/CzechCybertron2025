@@ -230,6 +230,11 @@
                                             <value>EZKJW</value>
                                         </field>
                                         <field>
+                                            <type>INTEGER</type>
+                                            <name>secondary_label_decimal_places</name>
+                                            <value>0</value>
+                                        </field>
+                                        <field>
                                             <type>STRING</type>
                                             <name>thresholds.0.color</name>
                                             <value>891515</value>
@@ -289,6 +294,36 @@
         </template>
     </templates>
     <graphs>
+        <graph>
+            <uuid>e40258f88d1b41deab6dd23dc9e2bf81</uuid>
+            <name>Graph doors</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>199C0D</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template ModBus Trezor</host>
+                        <key>zbx.value1</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <uuid>c14f4ac603424db5977c4edbed67c003</uuid>
+            <name>Graph lock</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>F63100</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template ModBus Trezor</host>
+                        <key>zbx.value0</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
         <graph>
             <uuid>d286cae48bb544b6bc5d152342c66f91</uuid>
             <name>Trezor graph</name>

@@ -8,7 +8,7 @@ The template to monitor PLC Velin
 
 ## Setup
 
-For debug ModeBus use Windows program {QModMaster}[https://automatizace.hw.cz/qmodmaster-testovaci-programek-pro-modbus-rtutcp.html]
+For debug ModeBus use Windows program [QModMaster](https://automatizace.hw.cz/qmodmaster-testovaci-programek-pro-modbus-rtutcp.html)
 
 ## Zabbix configuration
 
